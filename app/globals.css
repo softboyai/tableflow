@@ -1,0 +1,102 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  --gold-glow: rgba(239, 213, 142, 0.35);
+  --page-rim: rgba(255, 255, 255, 0.08);
+  --surface: rgba(255, 255, 255, 0.04);
+  --surface-strong: rgba(255, 255, 255, 0.055);
+  --border-soft: rgba(255, 255, 255, 0.11);
+  --muted: rgba(249, 248, 245, 0.66);
+}
+
+* {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-ink text-ivory font-body antialiased;
+  text-rendering: optimizeLegibility;
+  letter-spacing: -0.015em;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+  background-size: 64px 64px, 64px 64px;
+  mask-image: radial-gradient(circle at center, black 56%, transparent 90%);
+  opacity: 0.14;
+}
+
+.glass-card {
+  @apply bg-white/5 backdrop-blur-xl border border-white/10;
+}
+
+.gold-outline {
+  box-shadow: 0 0 0 1px rgba(239, 213, 142, 0.2) inset;
+}
+
+.tf-shell {
+  @apply border border-white/10 bg-white/[0.035];
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset;
+}
+
+.tf-panel {
+  @apply rounded-[22px] border border-white/10 bg-white/[0.03];
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.04) inset,
+    0 14px 28px rgba(0, 0, 0, 0.08);
+}
+
+.tf-card {
+  @apply rounded-[18px] border border-white/10 bg-white/[0.03];
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset;
+}
+
+.tf-button-primary {
+  @apply inline-flex items-center justify-center rounded-full bg-gold-300 px-6 py-3 text-sm font-semibold text-ink transition hover:bg-gold-200;
+}
+
+.tf-button-secondary {
+  @apply inline-flex items-center justify-center rounded-full border border-white/15 bg-white/[0.04] px-6 py-3 text-sm font-semibold text-ivory transition hover:border-gold-200/50 hover:bg-white/[0.06];
+}
+
+.tf-input {
+  @apply w-full rounded-2xl border border-white/10 bg-black/15 px-4 py-3 text-sm text-ivory placeholder:text-ivory/35 focus:border-gold-200/60 focus:outline-none;
+}
+
+.tf-eyebrow {
+  @apply font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-gold-200/80;
+}
+
+.tf-mono {
+  @apply font-mono;
+}
+
+::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(239, 213, 142, 0.4);
+  border-radius: 999px;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+@media (max-width: 640px) {
+  body::before {
+    background-size: auto, 48px 48px, 48px 48px;
+    opacity: 0.15;
+  }
+}
