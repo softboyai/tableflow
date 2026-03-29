@@ -1,54 +1,138 @@
 import Link from "next/link";
-import {
-  ArrowRight,
-  Crown,
-  QrCode,
-  TrendingUp,
-  UtensilsCrossed
-} from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Container from "@/components/Container";
 import { getDemoRestaurantSlug } from "@/lib/restaurants";
 
-const proofPoints = [
-  "A menu guests enjoy using",
-  "Offers people actually notice",
-  "A simple way to keep customers close"
+function TableFlowMark({ className = "h-5 w-5" }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      aria-hidden="true"
+    >
+      <g
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <rect x="3.5" y="3.5" width="5.5" height="5.5" rx="1.2" />
+        <rect x="15" y="3.5" width="5.5" height="5.5" rx="1.2" />
+        <rect x="3.5" y="15" width="5.5" height="5.5" rx="1.2" />
+        <path d="M15 15H17.5V17.5H15V15Z" />
+        <path d="M20.5 15V17.5" />
+        <path d="M15 20.5H17.5" />
+        <path d="M18.5 18.5H20.5V20.5H18.5V18.5Z" />
+      </g>
+    </svg>
+  );
+}
+
+const stats = [
+  {
+    number: "200+",
+    label: "customer contacts per restaurant in 30 days"
+  },
+  {
+    number: "1 afternoon",
+    label: "to set up and go live"
+  },
+  {
+    number: "RWF 0",
+    label: "to try it - no card needed"
+  }
 ];
 
-const valueCards = [
+const benefits = [
   {
-    icon: QrCode,
-    title: "Make a better first impression at the table",
-    body: "Give guests a menu that feels clear, polished, and easy to explore from the moment they sit down."
+    title: "Stop losing customers you will never know",
+    body: "Every guest who eats here and leaves without sharing their details is gone forever. TableFlow gives them a simple way to stay connected - right at the table, before they walk out."
   },
   {
-    icon: UtensilsCrossed,
-    title: "Put your offers in front of the right eyes",
-    body: "Show specials while guests are already looking through the menu and deciding what to order."
+    title: "Your offer seen by the right person at the right moment",
+    body: "Your promotion appears while guests are already looking at your menu and deciding what to order. Not on Instagram three days later. Right there. At the table."
   },
   {
-    icon: TrendingUp,
-    title: "Turn more visits into return visits",
-    body: "Collect customer details, see what gets attention, and build stronger reasons for guests to come back."
+    title: "A customer list that grows every single day",
+    body: "Every scan, every visit adds a real name and WhatsApp number to your private dashboard. A list you own. A list you can reach anytime. No platform in the way."
+  }
+];
+
+const useCases = [
+  {
+    number: "01",
+    title: "Send a WhatsApp message to everyone who visited last month",
+    body: "Tell them about a new dish, a weekend special, or a private event. Directly. No algorithm deciding who sees it.",
+    cardClass:
+      "border-[#eadba7] bg-[#f9f1cf]",
+    numberClass: "text-[#d2b24f]/55",
+    label: "Bring people back"
+  },
+  {
+    number: "02",
+    title: "Fill your events before you spend on promotion",
+    body: "Guests who already visited are the easiest people to bring back. Reach out with a personal message. Watch your tables fill.",
+    cardClass:
+      "border-[#cfe1f5] bg-[#dff0ff]",
+    numberClass: "text-[#78a8d6]/50",
+    label: "Fill quiet nights"
+  },
+  {
+    number: "03",
+    title: "Bring back guests you have not seen in a while",
+    body: "See who has gone quiet. Send one message. A guest who came once and felt welcomed will come back if you ask them to.",
+    cardClass:
+      "border-[#ecd5de] bg-[#f8e5ec]",
+    numberClass: "text-[#d48ca4]/50",
+    label: "Reconnect guests"
   }
 ];
 
 const processSteps = [
   {
-    label: "01",
-    title: "A guest opens your menu",
-    body: "They see your dishes, your offer, and the details they need in one smooth place."
+    number: "01",
+    title: "A guest scans the QR code on their table",
+    body: "They open your restaurant's page on their phone. Menu, current offer, upcoming events - everything in one place. No app to download."
   },
   {
-    label: "02",
-    title: "They explore and respond",
-    body: "They browse the menu, notice your offer, and reach out or leave their details."
+    number: "02",
+    title: "They browse, engage, and leave their details",
+    body: "They find what they want, notice your promotion, and leave their WhatsApp number before they go. Simple for them. Valuable for you."
   },
   {
-    label: "03",
-    title: "You keep the relationship going",
-    body: "You create a better experience, promote what matters, and build a list of customers you can welcome back."
+    number: "03",
+    title: "You build a list and stay connected forever",
+    body: "Every visit adds to your dashboard. Every contact is a real guest you can now reach directly - today, next week, any time you have something to say."
   }
+];
+
+const testimonials = [
+  {
+    quote:
+      "We had no way to tell our regulars about our new menu. Now we send one message and people show up. It actually works.",
+    name: "Amani R.",
+    detail: "Restaurant owner - Kigali",
+    cardClass:
+      "border-[#cfe1f5] bg-[#dff0ff]",
+    accentClass: "border-l-[#78a8d6]"
+  },
+  {
+    quote:
+      "Guests notice the offer because they see it while they are looking at the menu. That is the difference. The timing is perfect.",
+    name: "Chidi N.",
+    detail: "Cafe owner - Kigali",
+    cardClass:
+      "border-[#f0ddd1] bg-[#f8e9df]",
+    accentClass: "border-l-[#e1a57f]"
+  }
+];
+
+const mockupPoints = [
+  "A menu guests enjoy using",
+  "Offers shown at the right moment",
+  "A simple way to collect their details"
 ];
 
 export default async function Home() {
@@ -56,20 +140,18 @@ export default async function Home() {
 
   return (
     <main className="overflow-hidden bg-ink text-ivory">
-      <section className="relative isolate border-b border-white/10">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(239,213,142,0.16),transparent_38%),linear-gradient(180deg,rgba(255,255,255,0.03),transparent_45%)]" />
-        <div className="absolute left-[-10%] top-24 h-72 w-72 rounded-full bg-gold-200/10 blur-3xl" />
-        <div className="absolute right-[-5%] top-40 h-80 w-80 rounded-full bg-white/5 blur-3xl" />
-
-        <Container className="relative z-10 py-6">
+      <section className="sticky top-0 z-[100] border-b border-white/10 bg-ink/80 backdrop-blur-[8px]">
+        <Container className="max-w-[1080px] py-4">
           <div className="flex items-center justify-between gap-5">
             <div className="flex items-center gap-4">
               <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-gold-200/25 bg-gold-200/10 text-gold-200">
-                <QrCode size={20} />
+                <TableFlowMark className="h-5 w-5" />
               </div>
               <div>
-                <p className="font-body text-xl font-semibold tracking-[-0.03em]">TableFlow</p>
-                <p className="tf-mono text-[11px] uppercase tracking-[0.18em] text-ivory/45">
+                <p className="font-body text-xl font-semibold tracking-[-0.03em]">
+                  TableFlow
+                </p>
+                <p className="tf-mono text-[11px] uppercase tracking-[0.12em] text-ivory/45">
                   Made For Restaurants
                 </p>
               </div>
@@ -78,176 +160,151 @@ export default async function Home() {
             <div className="hidden items-center gap-3 sm:flex">
               <Link
                 href={`/r/${demoSlug}`}
-                className="tf-button-secondary px-5 py-2.5"
+                className="inline-flex items-center justify-center rounded-full border border-white/15 px-4 py-2 text-sm font-semibold text-ivory transition hover:border-gold-200/50 hover:bg-white/[0.04]"
               >
                 Try Demo
-              </Link>
-              <Link
-                href="/join"
-                className="tf-button-primary px-5 py-2.5"
-              >
-                Get Started
               </Link>
             </div>
           </div>
         </Container>
+      </section>
 
-        <Container className="relative z-10 grid gap-8 py-8 lg:grid-cols-[1.02fr_0.98fr] lg:items-center lg:gap-10 lg:py-14">
-          <div className="max-w-3xl space-y-6">
-            <span className="tf-mono inline-flex items-center gap-2 rounded-full border border-gold-200/25 bg-white/5 px-4 py-2 text-[11px] font-medium uppercase tracking-[0.18em] text-gold-200">
-              <Crown size={14} />
-              Built For Restaurants That Want Guests To Return
-            </span>
+      <section className="relative isolate border-b border-white/10 py-16 sm:py-20 lg:py-24">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(239,213,142,0.16),transparent_38%),linear-gradient(180deg,rgba(255,255,255,0.03),transparent_45%)]" />
+        <div className="absolute left-[-10%] top-24 h-72 w-72 rounded-full bg-gold-200/10 blur-3xl" />
+        <div className="absolute right-[-5%] top-40 h-80 w-80 rounded-full bg-white/5 blur-3xl" />
 
-            <div className="space-y-4">
-              <h1 className="text-balance font-display text-[3.15rem] leading-[0.9] sm:text-[4.5rem] lg:text-[5.6rem]">
-                Help more guests come back
-                <span className="block text-gold-200">
-                  after a better visit
-                </span>
-              </h1>
-              <p className="max-w-2xl text-base leading-7 text-ivory/68 sm:text-lg">
-                TableFlow helps restaurants present an interactive menu,
-                promote offers, make it easy for guests to reach out, and
-                collect customer details so more people come back.
-              </p>
-            </div>
-
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <Link
-                href="/join"
-                className="tf-button-primary gap-2 py-3.5 sm:w-auto"
-              >
-                Get Started
-                <ArrowRight size={16} />
-              </Link>
-              <Link
-                href={`/r/${demoSlug}`}
-                className="tf-button-secondary gap-2 py-3.5 sm:w-auto"
-              >
-                Try Demo
-              </Link>
-            </div>
-
-            <div className="grid gap-3 sm:grid-cols-3">
-              {proofPoints.map((point) => (
-                <div
-                  key={point}
-                  className="tf-card px-4 py-3.5 text-sm text-ivory/75"
-                >
-                  {point}
+        <Container className="relative z-10 max-w-[1080px]">
+          <div className="grid gap-12 lg:grid-cols-[1.08fr_0.92fr] lg:items-center lg:gap-8">
+            <div className="space-y-8">
+              <div className="space-y-6 text-center lg:text-left">
+                <div className="flex justify-center lg:justify-start">
+                  <span className="inline-flex items-center rounded-full border border-gold-200/35 px-4 py-2 text-[12px] uppercase tracking-[0.08em] text-gold-200">
+                    Built for restaurants in Rwanda
+                  </span>
                 </div>
-              ))}
-            </div>
-          </div>
 
-          <div className="relative mx-auto w-full max-w-2xl">
-            <div className="grid gap-4 lg:grid-cols-[1.02fr_0.98fr]">
-              <div className="tf-shell rounded-[32px] p-3">
-                <div className="rounded-[24px] border border-white/10 bg-neutral-950/90 p-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="tf-mono text-[10px] uppercase tracking-[0.18em] text-gold-200/80">
-                        What Guests See
-                      </p>
-                      <p className="mt-2 font-display text-2xl">Aurum</p>
-                    </div>
-                    <div className="rounded-2xl border border-white/10 bg-white/5 px-3 py-2 text-right">
-                      <p className="tf-mono text-[10px] uppercase tracking-[0.16em] text-ivory/40">
-                        Offer
-                      </p>
-                      <p className="text-sm text-gold-200">BOGO Pizza</p>
-                    </div>
+                <div className="space-y-4">
+                  <h1 className="max-w-[720px] text-balance text-[35px] font-extrabold leading-[1.04] tracking-[-0.045em] sm:text-[45px] lg:text-[58px]">
+                    Every week, guests eat here and leave.
+                    <br />
+                    You never hear from them again.
+                  </h1>
+                  <p className="mx-auto max-w-[560px] text-[17px] font-normal leading-[1.75] tracking-[-0.01em] text-ivory/68 lg:mx-0 lg:text-[18px]">
+                    TableFlow gives your restaurant a page guests open at the
+                    table. They browse your menu, see your offer, and leave
+                    their WhatsApp number. You get a growing list of real
+                    customers you can reach anytime.
+                  </p>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center lg:justify-start">
+                    <Link
+                      href={`/r/${demoSlug}`}
+                      className="tf-button-primary gap-2 px-6 py-3.5"
+                    >
+                      Try the Demo
+                      <ArrowRight size={16} />
+                    </Link>
+                    <Link
+                      href="/join"
+                      className="tf-button-secondary px-6 py-3.5"
+                    >
+                      Get Started
+                    </Link>
                   </div>
+                  <p className="text-center text-[13px] text-ivory/45 lg:text-left">
+                    Free to try <span className="inline-block h-1 w-1 rounded-full bg-ivory/30 align-middle" /> No credit card needed <span className="inline-block h-1 w-1 rounded-full bg-ivory/30 align-middle" /> Set up in one afternoon
+                  </p>
+                </div>
+              </div>
+            </div>
 
-                  <div className="mt-5 space-y-3">
-                    <div className="tf-card px-4 py-3">
-                      <p className="tf-mono text-[11px] text-ivory/50">Find something you want</p>
-                      <p className="mt-1 text-sm text-ivory">burger, pizza, mocktail...</p>
+            <div className="w-full">
+              <div className="rounded-xl border border-white/10 bg-[linear-gradient(180deg,rgba(249,248,245,0.94),rgba(249,248,245,0.88))] p-3 text-ink sm:p-4">
+                <p className="tf-mono px-1 pb-3 text-[11px] uppercase tracking-[0.12em] text-ink/42">
+                  What your guests see at the table
+                </p>
+                <div className="rounded-[20px] border border-ink/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.88),rgba(249,248,245,0.82))] p-2 sm:p-3">
+                  <div className="rounded-[18px] border border-ink/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.76),rgba(247,231,180,0.12))] p-3 sm:p-4">
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <p className="tf-mono text-[10px] uppercase tracking-[0.12em] text-gold-500/80">
+                          Guest View
+                        </p>
+                        <p className="mt-1.5 font-display text-[21px] font-extrabold leading-none tracking-[-0.04em]">
+                          Aurum
+                        </p>
+                      </div>
+                      <div className="rounded-2xl border border-ink/10 bg-white/70 px-3 py-2 text-right backdrop-blur-sm">
+                        <p className="tf-mono text-[10px] uppercase tracking-[0.12em] text-ink/40">
+                          Offer
+                        </p>
+                        <p className="text-sm text-gold-500">BOGO Pizza</p>
+                      </div>
                     </div>
-                    <div className="flex gap-2 overflow-hidden">
-                      {["Mains", "Drinks", "Dessert"].map((tab, index) => (
-                        <div
-                          key={tab}
-                          className={`tf-mono rounded-full px-3 py-2 text-[11px] font-medium ${
-                            index === 0
-                              ? "bg-gold-300 text-ink"
-                              : "border border-white/10 bg-white/5 text-ivory/70"
-                          }`}
-                        >
-                          {tab}
-                        </div>
-                      ))}
-                    </div>
-                    {["Prime Ribeye", "Pepperoni Royale"].map((dish, index) => (
-                      <div key={dish} className="tf-card px-4 py-3">
-                        <div className="flex items-start justify-between gap-3">
-                          <div>
-                            <p className="text-sm font-semibold text-ivory">{dish}</p>
-                            <p className="tf-mono mt-1 text-[11px] text-ivory/50">
-                              {index === 0
-                                ? "Featured tonight"
-                                : "Stone-baked and guest favorite"}
-                            </p>
+
+                    <div className="mt-4 space-y-2.5">
+                      <div className="rounded-2xl border border-ink/10 bg-white/70 px-4 py-3 backdrop-blur-sm">
+                        <p className="tf-mono text-[11px] text-ink/50">
+                          Find something you want
+                        </p>
+                        <p className="mt-1 text-sm text-ink/85">
+                          burger, pizza, mocktail...
+                        </p>
+                      </div>
+
+                      <div className="flex gap-2 overflow-x-auto pb-1">
+                        {["Mains", "Drinks", "Dessert"].map((tab, index) => (
+                          <div
+                            key={tab}
+                            className={`tf-mono whitespace-nowrap rounded-full px-3 py-2 text-[10px] font-medium uppercase tracking-[0.08em] ${
+                              index === 0
+                                ? "bg-gold-300 text-ink"
+                                : "border border-ink/10 bg-white/75 text-ink/68"
+                            }`}
+                          >
+                            {tab}
                           </div>
-                          <p className="text-sm text-gold-200">
-                            RWF {index === 0 ? "34,000" : "19,000"}
-                          </p>
-                        </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
 
-              <div className="space-y-4">
-                <div className="tf-panel p-6">
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-gold-200/20 bg-gold-200/10 text-gold-200">
-                      <QrCode size={18} />
-                    </div>
-                    <div>
-                      <p className="tf-eyebrow text-gold-200/75">
-                        For Your Business
-                      </p>
-                      <p className="mt-1 text-lg font-semibold text-ivory">
-                        Turn table traffic into repeat business
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="mt-5 space-y-3">
-                    {[
-                      {
-                        title: "Put your offer in the right moment",
-                        body: "Show your best offer while guests are deciding what to order."
-                      },
-                      {
-                        title: "Make ordering feel easier",
-                        body: "Help people browse dishes, check availability, and find what they want without confusion."
-                      },
-                      {
-                        title: "Keep customer details in one place",
-                        body: "Give guests a simple way to leave their details so you can stay connected after they visit."
-                      }
-                    ].map((item) => (
-                      <div key={item.title} className="tf-card bg-black/20 px-4 py-4">
-                        <p className="text-base font-semibold tracking-[-0.02em] text-ivory">{item.title}</p>
-                        <p className="mt-2 text-sm leading-6 text-ivory/60">{item.body}</p>
+                      <div className="grid gap-2.5">
+                        {["Prime Ribeye", "Pepperoni Royale"].map((dish, index) => (
+                          <div
+                            key={dish}
+                            className="rounded-2xl border border-ink/10 bg-white/72 px-4 py-3 backdrop-blur-sm"
+                          >
+                            <div className="flex items-start justify-between gap-3">
+                              <div>
+                                <p className="text-[14px] font-semibold tracking-[-0.02em] text-ink/88">
+                                  {dish}
+                                </p>
+                                <p className="tf-mono mt-1 text-[10px] tracking-[0.02em] text-ink/50">
+                                  {index === 0
+                                    ? "Featured tonight"
+                                    : "Stone-baked and guest favorite"}
+                                </p>
+                              </div>
+                              <p className="text-sm text-gold-500">
+                                RWF {index === 0 ? "34,000" : "19,000"}
+                              </p>
+                            </div>
+                          </div>
+                        ))}
                       </div>
-                    ))}
+                    </div>
                   </div>
                 </div>
 
-                <div className="rounded-[32px] border border-gold-200/20 bg-gradient-to-br from-gold-200/10 via-white/5 to-transparent p-6">
-                  <p className="tf-eyebrow">
-                    What Guests Feel
-                  </p>
-                  <div className="mt-4 space-y-3 text-sm leading-6 text-ivory/70">
-                    <p>They can find what they want faster.</p>
-                    <p>They can explore the menu and notice your offers more easily.</p>
-                    <p>They leave with a better feeling about your restaurant.</p>
-                  </div>
+                <div className="mt-4 flex flex-col items-center justify-center gap-2.5 border-t border-ink/10 pt-4 text-center text-[13px] text-ink/52 sm:flex-row sm:flex-wrap sm:gap-6">
+                  {mockupPoints.map((point) => (
+                    <p key={point} className="flex items-center gap-2">
+                      <span className="inline-block h-1.5 w-1.5 rounded-full bg-gold-500" />
+                      {point}
+                    </p>
+                  ))}
                 </div>
               </div>
             </div>
@@ -255,79 +312,120 @@ export default async function Home() {
         </Container>
       </section>
 
-      <section className="py-14">
-        <Container className="space-y-7">
-          <div className="max-w-2xl space-y-4">
-            <p className="tf-eyebrow">
-              Benefits
-            </p>
-            <h2 className="text-balance font-display text-4xl sm:text-5xl">
-              What TableFlow helps your restaurant do every day
-            </h2>
-            <p className="text-base leading-7 text-ivory/70">
-              It helps you show an interactive menu, promote offers, improve the customer experience, and build a customer list you can grow over time.
-            </p>
-          </div>
-
-          <div className="grid gap-5 lg:grid-cols-3">
-            {valueCards.map((card) => {
-              const Icon = card.icon;
-
-              return (
-                <article
-                  key={card.title}
-                  className="tf-panel p-6 transition hover:-translate-y-1 hover:border-gold-200/40"
-                >
-                  <div className="flex h-12 w-12 items-center justify-center rounded-[16px] border border-gold-200/25 bg-gold-200/10 text-gold-200">
-                    <Icon size={20} />
-                  </div>
-                  <h3 className="mt-6 text-[1.55rem] font-semibold leading-[1.05] tracking-[-0.03em] text-ivory">
-                    {card.title}
-                  </h3>
-                  <p className="mt-3 text-sm leading-7 text-ivory/65">
-                    {card.body}
-                  </p>
-                </article>
-              );
-            })}
+      <section className="border-y border-white/10 py-8 sm:py-10">
+        <Container className="max-w-[1080px]">
+          <div className="grid gap-8 text-center md:grid-cols-3 md:gap-0">
+            {stats.map((stat, index) => (
+              <div
+                key={stat.number}
+                className={`px-6 py-4 ${
+                  index < stats.length - 1 ? "md:border-r md:border-white/10" : ""
+                }`}
+              >
+                <p className="text-3xl font-extrabold text-ivory sm:text-[36px]">
+                  {stat.number}
+                </p>
+                <p className="mx-auto mt-2 max-w-[220px] text-[13px] text-ivory/50">
+                  {stat.label}
+                </p>
+              </div>
+            ))}
           </div>
         </Container>
       </section>
 
-      <section className="border-y border-white/10 bg-white/[0.02] py-14">
-        <Container className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
-          <div className="space-y-4">
-            <p className="tf-eyebrow">
-              How It Works
-            </p>
-            <h2 className="text-balance font-display text-4xl sm:text-5xl">
-              Three simple steps
+      <section className="py-16 sm:py-24">
+        <Container className="max-w-[1080px]">
+          <div className="max-w-[640px]">
+            <h2 className="text-[31px] font-extrabold tracking-[-0.035em] text-ivory">
+              What TableFlow does for your restaurant every day
             </h2>
-            <p className="text-base leading-7 text-ivory/70">
-              A guest opens it, interacts with your business, and you get more value from the visit.
+            <p className="mt-2 text-base text-ivory/60">
+              Three things that make a real difference to your business.
             </p>
-            <Link
-              href="/join"
-              className="tf-button-primary gap-2 py-3.5"
-            >
-              See How It Works
-              <ArrowRight size={16} />
-            </Link>
           </div>
 
-          <div className="space-y-4">
-            {processSteps.map((step) => (
-              <div
-                key={step.label}
-                className="tf-panel bg-black/20 p-6"
+          <div className="mt-12 grid gap-6 lg:grid-cols-3">
+            {benefits.map((benefit) => (
+              <article
+                key={benefit.title}
+                className="rounded-[10px] border border-white/10 bg-[linear-gradient(180deg,rgba(249,248,245,0.94),rgba(247,231,180,0.10))] p-7 text-ink transition hover:border-gold-200/25"
               >
-                <div className="flex items-start gap-4">
-                  <div className="tf-mono flex h-12 w-12 flex-none items-center justify-center rounded-[16px] border border-gold-200/20 bg-gold-200/10 text-sm font-medium text-gold-200">
-                    {step.label}
-                  </div>
+                <h3 className="mb-[10px] text-[21px] font-bold leading-[1.15] tracking-[-0.03em] text-ink/88">
+                  {benefit.title}
+                </h3>
+                <p className="max-w-[640px] text-[15px] leading-[1.7] text-ink/68">
+                  {benefit.body}
+                </p>
+              </article>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      <section className="border-y border-white/10 bg-[linear-gradient(180deg,rgba(249,248,245,0.95),rgba(249,248,245,0.88))] py-16 text-ink sm:py-24">
+        <Container className="max-w-[1080px]">
+          <div className="max-w-[640px]">
+            <h2 className="text-[31px] font-extrabold tracking-[-0.035em] text-ink/90">
+              What you can do once you have your customer list
+            </h2>
+          </div>
+
+          <div className="mt-12 grid gap-5">
+            {useCases.map((useCase) => (
+              <article
+                key={useCase.number}
+                className={`rounded-[18px] border p-6 text-ink transition sm:p-7 ${useCase.cardClass}`}
+              >
+                <div className="grid gap-4 md:grid-cols-[88px_1fr] md:items-start">
+                  <p
+                    className={`text-[44px] font-extrabold leading-none sm:text-[52px] ${useCase.numberClass}`}
+                  >
+                    {useCase.number}
+                  </p>
                   <div>
-                    <h3 className="text-xl font-semibold text-ivory">{step.title}</h3>
-                    <p className="mt-2 text-sm leading-7 text-ivory/65">{step.body}</p>
+                    <p className="tf-mono mb-2 text-[10px] uppercase tracking-[0.12em] text-ink/46">
+                      {useCase.label}
+                    </p>
+                    <h3 className="max-w-[560px] text-[18px] font-bold leading-[1.3] tracking-[-0.025em] text-ink/88">
+                      {useCase.title}
+                    </h3>
+                    <p className="mt-3 max-w-[640px] text-[15px] leading-[1.7] text-ink/66">
+                      {useCase.body}
+                    </p>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      <section className="py-16 sm:py-24">
+        <Container className="max-w-[1080px]">
+          <div className="max-w-[640px]">
+            <h2 className="text-[31px] font-extrabold tracking-[-0.035em] text-ivory">
+              How it works at your restaurant
+            </h2>
+          </div>
+
+          <div className="mt-12">
+            {processSteps.map((step, index) => (
+              <div
+                key={step.number}
+                className={`${index > 0 ? "border-t border-white/10" : ""} py-8`}
+              >
+                <div className="grid gap-5 md:grid-cols-[100px_1fr] md:items-start">
+                  <p className="text-[64px] font-extrabold leading-none text-ivory/12">
+                    {step.number}
+                  </p>
+                  <div>
+                    <h3 className="text-[21px] font-bold tracking-[-0.03em] text-ivory">
+                      {step.title}
+                    </h3>
+                    <p className="mt-3 max-w-[640px] text-[15px] leading-[1.7] text-ivory/65">
+                      {step.body}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -336,38 +434,111 @@ export default async function Home() {
         </Container>
       </section>
 
-      <section className="pb-14">
-        <Container>
-          <div className="rounded-[32px] border border-gold-200/20 bg-gradient-to-br from-gold-200/10 via-white/5 to-transparent p-7 sm:p-10">
-            <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-              <div className="max-w-2xl space-y-4">
-                <h2 className="text-balance font-display text-4xl sm:text-5xl">
-                  Try the demo for yourself
-                </h2>
-                <p className="text-base leading-7 text-ivory/70">
-                  See what your guests would see, explore the menu, and get a feel for how TableFlow can help your restaurant feel more welcoming and more effective.
-                </p>
-              </div>
+      <section className="border-y border-white/10 bg-[linear-gradient(180deg,rgba(249,248,245,0.95),rgba(249,248,245,0.9))] py-16 text-ink sm:py-24">
+        <Container className="max-w-[1080px]">
+          <div className="max-w-[640px]">
+            <h2 className="text-[31px] font-extrabold tracking-[-0.035em] text-ink/90">
+              What restaurant owners are saying
+            </h2>
+          </div>
 
-              <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                <Link
-                  href="/join"
-                  className="tf-button-primary gap-2 py-3.5"
-                >
-                  Get Started
-                  <ArrowRight size={16} />
-                </Link>
-                <Link
-                  href={`/r/${demoSlug}`}
-                  className="tf-button-secondary gap-2 py-3.5"
-                >
-                  Try Demo
-                </Link>
-              </div>
+          <div className="mt-12 grid gap-5 lg:grid-cols-2">
+            {testimonials.map((testimonial) => (
+              <article
+                key={testimonial.name}
+                className={`rounded-[18px] border border-l-[3px] p-6 sm:p-7 ${testimonial.cardClass} ${testimonial.accentClass}`}
+              >
+                <div className="mb-4 flex items-start justify-between gap-4">
+                  <p className="text-5xl leading-none text-ink/18">"</p>
+                  <p className="tf-mono text-[10px] uppercase tracking-[0.12em] text-ink/42">
+                    Owner feedback
+                  </p>
+                </div>
+                <p className="max-w-[480px] text-[16px] leading-[1.75] text-ink/84">
+                  {testimonial.quote}
+                </p>
+                <div className="mt-6 border-t border-ink/10 pt-4">
+                  <p className="text-[14px] font-bold tracking-[-0.015em] text-ink/88">
+                    {testimonial.name}
+                  </p>
+                  <p className="mt-1 text-[13px] text-ink/52">
+                    {testimonial.detail}
+                  </p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      <section className="py-16 sm:py-24">
+        <Container className="max-w-[1080px]">
+          <div className="mx-auto max-w-[640px] rounded-[24px] border border-gold-200/20 bg-[linear-gradient(180deg,rgba(249,248,245,0.94),rgba(247,231,180,0.12))] p-8 text-center text-ink sm:p-10">
+            <h2 className="text-[31px] font-extrabold tracking-[-0.035em] text-ink/90">
+              Simple pricing. Less than one table a night.
+            </h2>
+            <p className="mt-4 text-[16px] leading-[1.7] text-ink/66">
+              TableFlow is priced for independent restaurants - not enterprise
+              budgets. We are onboarding our first restaurants in Rwanda now.
+              Talk to us about founding partner rates.
+            </p>
+            <div className="mt-8">
+              <Link href="/join" className="tf-button-primary gap-2 px-6 py-3.5">
+                Get Early Access
+                <ArrowRight size={16} />
+              </Link>
+              <p className="mt-4 text-[13px] text-ink/48">
+                No contract. No setup fee. Cancel anytime.
+              </p>
             </div>
           </div>
         </Container>
       </section>
+
+      <section className="border-t border-white/10 py-16 sm:py-24">
+        <Container className="max-w-[1080px]">
+          <div className="rounded-[32px] border border-gold-200/20 bg-[linear-gradient(180deg,rgba(249,248,245,0.94),rgba(247,231,180,0.10))] p-7 text-ink sm:p-10">
+            <div className="mx-auto max-w-[640px] text-center">
+              <h2 className="text-[31px] font-extrabold tracking-[-0.035em] text-ink/90">
+                See it exactly the way your guests will
+              </h2>
+              <p className="mt-4 text-[16px] leading-[1.7] text-ink/66">
+                Open the live demo. Browse the menu. See the offer. Experience
+                TableFlow the way a guest at your table would. It takes less
+                than one minute.
+              </p>
+
+              <div className="mt-8">
+                <Link
+                  href={`/r/${demoSlug}`}
+                  className="tf-button-primary gap-2 px-6 py-3.5"
+                >
+                  Open the Demo
+                  <ArrowRight size={16} />
+                </Link>
+              </div>
+
+              <p className="mt-5 text-sm text-ink/58">
+                Ready to sign up?{" "}
+                <Link
+                  href="/join"
+                  className="text-gold-500 transition hover:text-gold-400"
+                >
+                  Get started here
+                </Link>
+              </p>
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      <footer className="border-t border-white/10 py-6">
+        <Container className="max-w-[1080px]">
+          <p className="text-center text-[13px] text-ivory/45">
+            Currently serving restaurants in Rwanda
+          </p>
+        </Container>
+      </footer>
     </main>
   );
 }

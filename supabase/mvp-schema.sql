@@ -109,6 +109,12 @@ create table if not exists public.menu_item_views (
   viewed_at timestamptz not null default now()
 );
 
+create table if not exists public.admin_restaurant_notes (
+  restaurant_id uuid primary key references public.restaurants(id) on delete cascade,
+  notes text not null default '',
+  updated_at timestamptz not null default now()
+);
+
 create index if not exists idx_restaurants_slug on public.restaurants(slug);
 create index if not exists idx_restaurant_gallery_restaurant_id on public.restaurant_gallery(restaurant_id, sort_order);
 create index if not exists idx_menu_categories_restaurant_id on public.menu_categories(restaurant_id, sort_order);
@@ -120,6 +126,7 @@ create index if not exists idx_customer_leads_restaurant_id on public.customer_l
 create index if not exists idx_qr_scans_restaurant_id on public.qr_scans(restaurant_id, scanned_at desc);
 create index if not exists idx_promo_claims_restaurant_id on public.promo_claims(restaurant_id, created_at desc);
 create index if not exists idx_menu_item_views_restaurant_id on public.menu_item_views(restaurant_id, viewed_at desc);
+create index if not exists idx_admin_restaurant_notes_updated_at on public.admin_restaurant_notes(updated_at desc);
 
 alter table public.restaurants enable row level security;
 alter table public.restaurant_gallery enable row level security;
@@ -130,6 +137,7 @@ alter table public.customer_leads enable row level security;
 alter table public.qr_scans enable row level security;
 alter table public.promo_claims enable row level security;
 alter table public.menu_item_views enable row level security;
+alter table public.admin_restaurant_notes enable row level security;
 
 drop policy if exists "public can read active restaurants" on public.restaurants;
 create policy "public can read active restaurants"

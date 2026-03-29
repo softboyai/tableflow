@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { getAdminPassword } from "@/lib/admin";
 
 type SignupRow = {
   id: string;
@@ -48,7 +49,7 @@ async function fetchLeadFeed(supabase: any) {
 export async function GET(request: Request) {
   const adminPassword =
     request.headers.get("x-admin-password")?.trim() || "";
-  const expectedPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || "";
+  const expectedPassword = getAdminPassword();
   const supabase = getServiceSupabase();
 
   if (!expectedPassword || adminPassword !== expectedPassword) {

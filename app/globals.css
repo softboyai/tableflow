@@ -19,7 +19,8 @@
 body {
   @apply bg-ink text-ivory font-body antialiased;
   text-rendering: optimizeLegibility;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.01em;
+  font-feature-settings: "ss01" 1, "cv01" 1, "cv10" 1;
 }
 
 body::before {
@@ -61,11 +62,11 @@ body::before {
 }
 
 .tf-button-primary {
-  @apply inline-flex items-center justify-center rounded-full bg-gold-300 px-6 py-3 text-sm font-semibold text-ink transition hover:bg-gold-200;
+  @apply inline-flex items-center justify-center rounded-full bg-gold-300 px-6 py-3 text-sm font-semibold tracking-[-0.02em] text-ink transition hover:bg-gold-200;
 }
 
 .tf-button-secondary {
-  @apply inline-flex items-center justify-center rounded-full border border-white/15 bg-white/[0.04] px-6 py-3 text-sm font-semibold text-ivory transition hover:border-gold-200/50 hover:bg-white/[0.06];
+  @apply inline-flex items-center justify-center rounded-full border border-white/15 bg-white/[0.04] px-6 py-3 text-sm font-semibold tracking-[-0.02em] text-ivory transition hover:border-gold-200/50 hover:bg-white/[0.06];
 }
 
 .tf-input {
@@ -73,7 +74,7 @@ body::before {
 }
 
 .tf-eyebrow {
-  @apply font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-gold-200/80;
+  @apply font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-gold-200/80;
 }
 
 .tf-mono {
