@@ -23,6 +23,10 @@ type DashboardPageProps = {
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
+function getCleanAppUrl() {
+  return (process.env.NEXT_PUBLIC_APP_URL || "").trim().replace(/\/$/, "");
+}
+
 export default async function DashboardPage({ params }: DashboardPageProps) {
   const { slug } = await params;
   const access = await getDashboardAccessState(
@@ -118,8 +122,9 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
   const protocol =
     requestHeaders.get("x-forwarded-proto") ||
     (host?.includes("localhost") ? "http" : "https");
-  const guestUrl = process.env.NEXT_PUBLIC_APP_URL
-    ? `${process.env.NEXT_PUBLIC_APP_URL.replace(/\/$/, "")}/r/${restaurant.slug}`
+  const appUrl = getCleanAppUrl();
+  const guestUrl = appUrl
+    ? `${appUrl}/r/${restaurant.slug}`
     : `${protocol}://${host}/r/${restaurant.slug}`;
 
   return (

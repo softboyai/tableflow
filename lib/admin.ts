@@ -181,6 +181,10 @@ function formatCsvCell(value: string | null | undefined) {
   return `"${safe.replace(/"/g, '""')}"`;
 }
 
+function getCleanAppUrl() {
+  return (process.env.NEXT_PUBLIC_APP_URL || "").trim().replace(/\/$/, "");
+}
+
 export function getAdminPassword() {
   return process.env.ADMIN_PASSWORD || process.env.NEXT_PUBLIC_ADMIN_PASSWORD || "";
 }
@@ -418,7 +422,7 @@ export async function getAdminRestaurantDetailData(
   const menuViews = (menuViewsResponse.data || []) as MenuItemViewRow[];
   const menuItems = (menuItemsResponse.data || []) as MenuItemRow[];
   const events = (eventsResponse.data || []) as EventRow[];
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "";
+  const appUrl = getCleanAppUrl();
 
   const today = startOfDay(new Date());
   const dailyActivity = Array.from({ length: 30 }, (_, index) => {
