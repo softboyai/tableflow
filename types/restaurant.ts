@@ -17,7 +17,7 @@ export type Restaurant = {
 
 export type RestaurantGalleryItem = {
   id: string;
-  imageUrl: string;
+  imageUrl: string | null;
   altText: string;
   sortOrder: number;
 };

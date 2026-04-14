@@ -645,11 +645,13 @@ function MenuItemRow({
     <div className="rounded-2xl border border-white/10 bg-black/25 px-4 py-4">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="flex gap-4">
-          {item.imageUrl ? (
-            <div className="relative h-20 w-20 overflow-hidden rounded-2xl bg-white/5">
+          <div className="relative flex h-20 w-20 items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-white/5">
+            {item.imageUrl ? (
               <Image src={item.imageUrl} alt={item.name} fill className="object-cover" sizes="80px" />
-            </div>
-          ) : null}
+            ) : (
+              <span className="text-2xl" aria-hidden="true">🍽️</span>
+            )}
+          </div>
           <div>
             <div className="flex flex-wrap items-center gap-3">
               <p className="text-sm font-semibold text-ivory">{item.name}</p>

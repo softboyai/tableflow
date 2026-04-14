@@ -15,6 +15,36 @@ type MenuExperienceProps = {
   menuItems: RestaurantMenuItem[];
 };
 
+function MenuItemImage({
+  imageUrl,
+  name,
+  isAvailable
+}: {
+  imageUrl: string | null;
+  name: string;
+  isAvailable: boolean;
+}) {
+  if (!imageUrl) {
+    return (
+      <div className="relative flex h-24 w-24 flex-none items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-white/5 text-3xl">
+        <span aria-hidden="true">{isAvailable ? "🍽️" : "🍴"}</span>
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative h-24 w-24 flex-none overflow-hidden rounded-2xl bg-white/5">
+      <Image
+        src={imageUrl}
+        alt={name}
+        fill
+        className={`object-cover ${isAvailable ? "" : "opacity-50 grayscale"}`}
+        sizes="96px"
+      />
+    </div>
+  );
+}
+
 export default function MenuExperience({
   restaurantId,
   restaurantName,
@@ -294,15 +324,11 @@ export default function MenuExperience({
                           }`}
                         >
                           <div className="flex gap-4">
-                            <div className="relative h-24 w-24 flex-none overflow-hidden rounded-2xl bg-white/5">
-                              <Image
-                                src={item.imageUrl}
-                                alt={item.name}
-                                fill
-                                className={`object-cover ${item.isAvailable ? "" : "opacity-50 grayscale"}`}
-                                sizes="96px"
-                              />
-                            </div>
+                            <MenuItemImage
+                              imageUrl={item.imageUrl}
+                              name={item.name}
+                              isAvailable={item.isAvailable}
+                            />
                             <div className="min-w-0 flex-1">
                               <div className="flex flex-wrap items-start justify-between gap-3">
                                 <div>

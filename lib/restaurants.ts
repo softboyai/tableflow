@@ -126,7 +126,7 @@ function mapMenuItem(row: MenuItemRow): RestaurantMenuItem {
     description: row.description || "House favorite.",
     price: row.price,
     currency: row.currency || "RWF",
-    imageUrl: row.image_url || demoRestaurantData.signatureDishes[0].imageUrl,
+    imageUrl: row.image_url || null,
     tags: row.tags || [],
     isAvailable: Boolean(row.is_available),
     isFeatured: Boolean(row.is_featured),

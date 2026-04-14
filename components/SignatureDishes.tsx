@@ -23,13 +23,19 @@ export default function SignatureDishes({ dishes }: SignatureDishesProps) {
               className="min-w-[240px] flex-1 rounded-3xl border border-white/10 bg-white/5 p-4 shadow-luxury-soft transition hover:-translate-y-1 hover:border-gold-200/50"
             >
               <div className="relative h-40 overflow-hidden rounded-2xl">
-                <Image
-                  src={dish.imageUrl}
-                  alt={dish.name}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 70vw, 240px"
-                />
+                {dish.imageUrl ? (
+                  <Image
+                    src={dish.imageUrl}
+                    alt={dish.name}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 70vw, 240px"
+                  />
+                ) : (
+                  <div className="flex h-full items-center justify-center border border-white/10 bg-white/5 text-5xl">
+                    <span aria-hidden="true">🍽️</span>
+                  </div>
+                )}
               </div>
               <div className="mt-4 space-y-2">
                 <h3 className="text-lg font-semibold text-ivory">
