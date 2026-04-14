@@ -124,12 +124,17 @@ const menuItems: RestaurantMenuItem[] = [
   }
 ];
 
-const gallery: RestaurantGalleryItem[] = menuItems.map((item, index) => ({
-  id: `gallery-${item.id}`,
-  imageUrl: item.imageUrl,
-  altText: item.name,
-  sortOrder: index + 1
-}));
+const gallery: RestaurantGalleryItem[] = menuItems
+  .filter(
+    (item): item is RestaurantMenuItem & { imageUrl: string } =>
+      Boolean(item.imageUrl)
+  )
+  .map((item, index) => ({
+    id: `gallery-${item.id}`,
+    imageUrl: item.imageUrl,
+    altText: item.name,
+    sortOrder: index + 1
+  }));
 
 const events: RestaurantEvent[] = [
   {
