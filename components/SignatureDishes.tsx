@@ -32,8 +32,10 @@ export default function SignatureDishes({ dishes }: SignatureDishesProps) {
                     sizes="(max-width: 768px) 70vw, 240px"
                   />
                 ) : (
-                  <div className="flex h-full items-center justify-center border border-white/10 bg-white/5 text-5xl">
-                    <span aria-hidden="true">🍽️</span>
+                  <div className="flex h-full items-center justify-center border border-white/10 bg-white/5 px-4 text-center">
+                    <span className="text-sm font-semibold uppercase tracking-[0.2em] text-ivory/55">
+                      No Photo
+                    </span>
                   </div>
                 )}
               </div>

@@ -26,8 +26,10 @@ function MenuItemImage({
 }) {
   if (!imageUrl) {
     return (
-      <div className="relative flex h-24 w-24 flex-none items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-white/5 text-3xl">
-        <span aria-hidden="true">{isAvailable ? "🍽️" : "🍴"}</span>
+      <div className="relative flex h-24 w-24 flex-none items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-white/5 px-3 text-center">
+        <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-ivory/55">
+          No Photo
+        </span>
       </div>
     );
   }

@@ -649,7 +649,9 @@ function MenuItemRow({
             {item.imageUrl ? (
               <Image src={item.imageUrl} alt={item.name} fill className="object-cover" sizes="80px" />
             ) : (
-              <span className="text-2xl" aria-hidden="true">🍽️</span>
+              <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-ivory/55">
+                No Photo
+              </span>
             )}
           </div>
           <div>
