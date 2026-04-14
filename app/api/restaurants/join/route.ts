@@ -79,6 +79,17 @@ export async function POST(request: Request) {
     address: getText(formData, "address") || null,
     location_hint: getText(formData, "locationHint") || "Find us easily",
     hours_label: getText(formData, "hoursLabel") || "Open daily",
+    lead_capture_title:
+      getText(formData, "leadCaptureTitle") || "Stay in touch with this restaurant",
+    lead_capture_text:
+      getText(formData, "leadCaptureText") ||
+      "Leave your name and WhatsApp number to hear about offers, events, and popular dishes.",
+    lead_capture_button_text:
+      getText(formData, "leadCaptureButtonText") || "Stay In Touch",
+    lead_capture_placement:
+      getText(formData, "leadCapturePlacement") === "after_promo"
+        ? "after_promo"
+        : "after_menu",
     hero_image_url: heroImageUrl,
     menu_pdf_url: menuPdfUrl,
     maps_embed_url: getText(formData, "mapsEmbedUrl") || null

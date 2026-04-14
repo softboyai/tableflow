@@ -7,11 +7,17 @@ import Container from "./Container";
 type JoinClubFormProps = {
   restaurantId: string;
   restaurantName: string;
+  title: string;
+  description: string;
+  buttonLabel: string;
 };
 
 export default function JoinClubForm({
   restaurantId,
-  restaurantName
+  restaurantName,
+  title,
+  description,
+  buttonLabel
 }: JoinClubFormProps) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -74,15 +80,13 @@ export default function JoinClubForm({
           <div className="relative z-10 grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
             <div className="space-y-4">
               <span className="tf-eyebrow">
-                Join the Club
+                Stay Connected
               </span>
               <h2 className="text-balance font-display text-4xl leading-[0.94] text-ivory sm:text-5xl">
-                Access exclusive tastings and private events
+                {title}
               </h2>
               <p className="text-sm text-ivory/70">
-                Members receive priority reservations, chef collaborations, and
-                curated experiences. Leave your details and the {restaurantName}
-                concierge team will reach out.
+                {description}
               </p>
             </div>
             <form className="space-y-4" onSubmit={handleSubmit}>
@@ -117,7 +121,7 @@ export default function JoinClubForm({
                 className="tf-button-primary w-full disabled:opacity-60"
                 disabled={status === "loading"}
               >
-                {status === "loading" ? "Submitting..." : "Request Access"}
+                {status === "loading" ? "Submitting..." : buttonLabel}
               </button>
               {message ? (
                 <p

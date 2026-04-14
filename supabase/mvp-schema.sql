@@ -28,6 +28,18 @@ create table if not exists public.restaurants (
 alter table public.restaurants
 add column if not exists dashboard_password_hash text;
 
+alter table public.restaurants
+add column if not exists lead_capture_title text;
+
+alter table public.restaurants
+add column if not exists lead_capture_text text;
+
+alter table public.restaurants
+add column if not exists lead_capture_button_text text;
+
+alter table public.restaurants
+add column if not exists lead_capture_placement text default 'after_menu';
+
 create table if not exists public.restaurant_gallery (
   id uuid primary key default gen_random_uuid(),
   restaurant_id uuid not null references public.restaurants(id) on delete cascade,
@@ -109,6 +121,13 @@ create table if not exists public.menu_item_views (
   viewed_at timestamptz not null default now()
 );
 
+create table if not exists public.restaurant_action_clicks (
+  id uuid primary key default gen_random_uuid(),
+  restaurant_id uuid not null references public.restaurants(id) on delete cascade,
+  action_type text not null,
+  created_at timestamptz not null default now()
+);
+
 create table if not exists public.admin_restaurant_notes (
   restaurant_id uuid primary key references public.restaurants(id) on delete cascade,
   notes text not null default '',
@@ -126,6 +145,7 @@ create index if not exists idx_customer_leads_restaurant_id on public.customer_l
 create index if not exists idx_qr_scans_restaurant_id on public.qr_scans(restaurant_id, scanned_at desc);
 create index if not exists idx_promo_claims_restaurant_id on public.promo_claims(restaurant_id, created_at desc);
 create index if not exists idx_menu_item_views_restaurant_id on public.menu_item_views(restaurant_id, viewed_at desc);
+create index if not exists idx_restaurant_action_clicks_restaurant_id on public.restaurant_action_clicks(restaurant_id, action_type, created_at desc);
 create index if not exists idx_admin_restaurant_notes_updated_at on public.admin_restaurant_notes(updated_at desc);
 
 alter table public.restaurants enable row level security;
@@ -137,6 +157,7 @@ alter table public.customer_leads enable row level security;
 alter table public.qr_scans enable row level security;
 alter table public.promo_claims enable row level security;
 alter table public.menu_item_views enable row level security;
+alter table public.restaurant_action_clicks enable row level security;
 alter table public.admin_restaurant_notes enable row level security;
 
 drop policy if exists "public can read active restaurants" on public.restaurants;
@@ -216,6 +237,21 @@ with check (
   )
 );
 
+drop policy if exists "public can insert restaurant action clicks" on public.restaurant_action_clicks;
+create policy "public can insert restaurant action clicks"
+on public.restaurant_action_clicks
+for insert
+to anon
+with check (
+  action_type in ('whatsapp_click', 'waiter_call')
+  and exists (
+    select 1
+    from public.restaurants
+    where public.restaurants.id = public.restaurant_action_clicks.restaurant_id
+      and public.restaurants.is_active = true
+  )
+);
+
 create or replace view public.restaurant_owner_metrics as
 select
   r.id as restaurant_id,
@@ -274,6 +310,14 @@ values (
   'Open daily from 12:00 PM to 1:00 AM.'
 )
 on conflict (slug) do nothing;
+
+update public.restaurants
+set
+  lead_capture_title = coalesce(lead_capture_title, 'Get updates from Aurum Dining'),
+  lead_capture_text = coalesce(lead_capture_text, 'Leave your name and WhatsApp number to hear about special nights, chef events, and return offers.'),
+  lead_capture_button_text = coalesce(lead_capture_button_text, 'Get Updates'),
+  lead_capture_placement = coalesce(lead_capture_placement, 'after_menu')
+where slug = 'aurum-dining';
 
 update public.restaurants
 set dashboard_password_hash = 'tableflowdemoseed:27af462aea56bb022cf898f3b0ad8fc70ed87390cf150ca9ec6d6f76efae5b8f65b56b776cae195a4109b68174b9ac82d5def2b41924f46c072b518c12773871'

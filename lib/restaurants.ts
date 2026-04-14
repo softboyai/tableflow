@@ -24,6 +24,10 @@ type RestaurantRow = {
   address: string | null;
   location_hint: string | null;
   hours_label: string | null;
+  lead_capture_title: string | null;
+  lead_capture_text: string | null;
+  lead_capture_button_text: string | null;
+  lead_capture_placement: string | null;
 };
 
 type MenuItemRow = {
@@ -112,7 +116,16 @@ function mapRestaurant(row: RestaurantRow): Restaurant {
     address: row.address || "Visit our venue",
     locationHint:
       row.location_hint || "Find us in the heart of the city",
-    hoursLabel: row.hours_label || "Open daily"
+    hoursLabel: row.hours_label || "Open daily",
+    leadCaptureTitle:
+      row.lead_capture_title || "Stay in touch with this restaurant",
+    leadCaptureText:
+      row.lead_capture_text ||
+      "Leave your name and WhatsApp number to hear about offers, events, and popular dishes.",
+    leadCaptureButtonText:
+      row.lead_capture_button_text || "Stay In Touch",
+    leadCapturePlacement:
+      row.lead_capture_placement === "after_promo" ? "after_promo" : "after_menu"
   };
 }
 
@@ -181,6 +194,19 @@ async function fetchRestaurantFromSupabase(
     return null;
   }
 
+  const leadCaptureResponse = await supabase
+    .from("restaurants")
+    .select(
+      "lead_capture_title, lead_capture_text, lead_capture_button_text, lead_capture_placement"
+    )
+    .eq("id", restaurantRow.id)
+    .maybeSingle<Partial<RestaurantRow>>();
+
+  const restaurantWithLeadCapture = {
+    ...restaurantRow,
+    ...(leadCaptureResponse.error ? {} : leadCaptureResponse.data || {})
+  };
+
   const [menuResponse, categoriesResponse, galleryResponse, eventsResponse] = await Promise.all([
     supabase
       .from("menu_items")
@@ -220,7 +246,7 @@ async function fetchRestaurantFromSupabase(
   );
 
   return {
-    restaurant: mapRestaurant(restaurantRow),
+    restaurant: mapRestaurant(restaurantWithLeadCapture),
     menuCategories,
     signatureDishes: menuItems
       .filter((item) => item.isFeatured && item.isAvailable)

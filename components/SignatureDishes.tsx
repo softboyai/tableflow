@@ -8,42 +8,75 @@ type SignatureDishesProps = {
 };
 
 export default function SignatureDishes({ dishes }: SignatureDishesProps) {
+  if (dishes.length === 0) {
+    return null;
+  }
+
   return (
     <section className="py-16">
       <Container className="space-y-8">
         <SectionHeader
-          eyebrow="Signature Dishes"
-          title="Handcrafted culinary icons"
-          subtitle="A glimpse into the plates that define the house."
+          eyebrow="Recommended"
+          title="Top picks to start with"
+          subtitle="A quick shortlist before guests browse the full menu."
         />
-        <div className="flex gap-4 overflow-x-auto pb-2">
-          {dishes.map((dish) => (
+        <div className="grid gap-4 lg:grid-cols-2">
+          {dishes.slice(0, 4).map((dish) => (
             <article
               key={dish.id}
-              className="min-w-[240px] flex-1 rounded-3xl border border-white/10 bg-white/5 p-4 shadow-luxury-soft transition hover:-translate-y-1 hover:border-gold-200/50"
+              className={`overflow-hidden rounded-[28px] border p-4 transition ${
+                dish.isAvailable
+                  ? "border-white/10 bg-black/20 hover:border-gold-200/40"
+                  : "border-red-400/20 bg-red-400/5"
+              }`}
             >
-              <div className="relative h-40 overflow-hidden rounded-2xl">
-                {dish.imageUrl ? (
-                  <Image
-                    src={dish.imageUrl}
-                    alt={dish.name}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 70vw, 240px"
-                  />
-                ) : (
-                  <div className="flex h-full items-center justify-center border border-white/10 bg-white/5 px-4 text-center">
-                    <span className="text-sm font-semibold uppercase tracking-[0.2em] text-ivory/55">
+              <div className="flex gap-4">
+                <div className="relative flex h-24 w-24 flex-none items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-white/5">
+                  {dish.imageUrl ? (
+                    <Image
+                      src={dish.imageUrl}
+                      alt={dish.name}
+                      fill
+                      className={`object-cover ${dish.isAvailable ? "" : "opacity-50 grayscale"}`}
+                      sizes="96px"
+                    />
+                  ) : (
+                    <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-ivory/55">
                       No Photo
                     </span>
+                  )}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div>
+                      <h3 className="text-base font-semibold text-ivory">
+                        {dish.name}
+                      </h3>
+                      <p className="mt-1 text-sm text-ivory/60">
+                        {dish.description}
+                      </p>
+                    </div>
+                    <p className="text-sm font-semibold text-gold-200">
+                      {typeof dish.price === "number"
+                        ? `${dish.currency || "RWF"} ${dish.price.toLocaleString()}`
+                        : "Ask your server"}
+                    </p>
                   </div>
-                )}
-              </div>
-              <div className="mt-4 space-y-2">
-                <h3 className="text-lg font-semibold text-ivory">
-                  {dish.name}
-                </h3>
-                <p className="text-sm text-ivory/70">{dish.description}</p>
+
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    <span className="rounded-full border border-gold-200/30 bg-gold-200/10 px-2 py-1 text-[10px] uppercase tracking-[0.2em] text-gold-200">
+                      Top Pick
+                    </span>
+                    {dish.tags.slice(0, 2).map((tag) => (
+                      <span
+                        key={`${dish.id}-${tag}`}
+                        className="rounded-full border border-white/10 bg-white/5 px-2 py-1 text-[10px] uppercase tracking-[0.2em] text-ivory/60"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
               </div>
             </article>
           ))}

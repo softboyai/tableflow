@@ -17,6 +17,10 @@ type RestaurantEditorProps = {
     address: string | null;
     location_hint: string | null;
     hours_label: string | null;
+    lead_capture_title: string | null;
+    lead_capture_text: string | null;
+    lead_capture_button_text: string | null;
+    lead_capture_placement: string | null;
   };
 };
 
@@ -34,7 +38,18 @@ export default function RestaurantContentEditor({
     address: restaurant.address || "",
     locationHint: restaurant.location_hint || "",
     hoursLabel: restaurant.hours_label || "",
-    mapsEmbedUrl: restaurant.maps_embed_url || ""
+    mapsEmbedUrl: restaurant.maps_embed_url || "",
+    leadCaptureTitle:
+      restaurant.lead_capture_title || "Stay in touch with this restaurant",
+    leadCaptureText:
+      restaurant.lead_capture_text ||
+      "Leave your name and WhatsApp number to hear about offers, events, and popular dishes.",
+    leadCaptureButtonText:
+      restaurant.lead_capture_button_text || "Stay In Touch",
+    leadCapturePlacement:
+      restaurant.lead_capture_placement === "after_promo"
+        ? "after_promo"
+        : "after_menu"
   });
   const [heroImage, setHeroImage] = useState<File | null>(null);
   const [menuPdf, setMenuPdf] = useState<File | null>(null);
@@ -91,13 +106,13 @@ export default function RestaurantContentEditor({
     <div className="tf-panel p-6">
       <div className="space-y-2">
         <p className="tf-eyebrow">
-          Your Details
+          Guest Experience
         </p>
         <h2 className="text-2xl font-semibold text-ivory">
-          Refresh the experience your guests see
+          Update the page your guests actually use
         </h2>
         <p className="text-sm text-ivory/65">
-          Update your restaurant name, welcome message, offer, contact details, and menu files whenever things change.
+          Keep your first impression, offer, and lead capture clear before tomorrow's demo.
         </p>
       </div>
 
@@ -177,6 +192,57 @@ export default function RestaurantContentEditor({
           }
         />
 
+        <div className="rounded-3xl border border-white/10 bg-black/20 p-5">
+          <div className="space-y-2">
+            <p className="tf-eyebrow">Lead Capture</p>
+            <p className="text-sm text-ivory/65">
+              Decide what guests see when you ask them to stay in touch.
+            </p>
+          </div>
+          <div className="mt-5 space-y-4">
+            <Field
+              label="Lead Capture Title"
+              value={form.leadCaptureTitle}
+              onChange={(value) =>
+                setForm((current) => ({ ...current, leadCaptureTitle: value }))
+              }
+            />
+            <TextField
+              label="Lead Capture Text"
+              value={form.leadCaptureText}
+              onChange={(value) =>
+                setForm((current) => ({ ...current, leadCaptureText: value }))
+              }
+            />
+            <div className="grid gap-4 sm:grid-cols-2">
+              <Field
+                label="Lead Capture Button"
+                value={form.leadCaptureButtonText}
+                onChange={(value) =>
+                  setForm((current) => ({
+                    ...current,
+                    leadCaptureButtonText: value
+                  }))
+                }
+              />
+              <SelectField
+                label="Lead Capture Placement"
+                value={form.leadCapturePlacement}
+                options={[
+                  { value: "after_promo", label: "After promo" },
+                  { value: "after_menu", label: "After menu" }
+                ]}
+                onChange={(value) =>
+                  setForm((current) => ({
+                    ...current,
+                    leadCapturePlacement: value
+                  }))
+                }
+              />
+            </div>
+          </div>
+        </div>
+
         <div className="grid gap-4 sm:grid-cols-2">
           <FileField
             label={`Hero Image${restaurant.hero_image_url ? " (replace)" : ""}`}
@@ -246,6 +312,32 @@ function TextField({ label, value, onChange }: FieldProps) {
         rows={4}
         className="tf-input"
       />
+    </label>
+  );
+}
+
+function SelectField({
+  label,
+  value,
+  onChange,
+  options
+}: FieldProps & { options: { value: string; label: string }[] }) {
+  return (
+    <label className="space-y-2">
+      <span className="text-xs uppercase tracking-[0.3em] text-ivory/60">
+        {label}
+      </span>
+      <select
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        className="tf-input"
+      >
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
     </label>
   );
 }

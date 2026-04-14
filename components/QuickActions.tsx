@@ -3,21 +3,34 @@ import {
   Crown,
   MapPin,
   MessageCircle,
+  PhoneCall,
   UtensilsCrossed
 } from "lucide-react";
 import Container from "./Container";
 import SectionHeader from "./SectionHeader";
+import TrackedLink from "./TrackedLink";
 
 type QuickActionsProps = {
+  restaurantId: string;
   whatsappHref: string;
   callHref: string;
 };
 
+type ActionItem = {
+  title: string;
+  description: string;
+  icon: typeof UtensilsCrossed;
+  href: string;
+  external?: boolean;
+  actionType?: "whatsapp_click" | "waiter_call";
+};
+
 export default function QuickActions({
+  restaurantId,
   whatsappHref,
   callHref
 }: QuickActionsProps) {
-  const actions = [
+  const actions: ActionItem[] = [
     {
       title: "View Menu",
       description: "See what is being served today.",
@@ -38,10 +51,11 @@ export default function QuickActions({
     },
     {
       title: "Message Us",
-      description: "Ask a question right away.",
+      description: "Ask about a table, dish, or reservation.",
       icon: MessageCircle,
       href: whatsappHref,
-      external: true
+      external: true,
+      actionType: "whatsapp_click"
     },
     {
       title: "Stay In Touch",
@@ -51,9 +65,10 @@ export default function QuickActions({
     },
     {
       title: "Call Waiter",
-      description: "Get help from the team quickly.",
-      icon: MessageCircle,
-      href: callHref
+      description: "Reach the team quickly during service.",
+      icon: PhoneCall,
+      href: callHref,
+      actionType: "waiter_call"
     }
   ];
 
@@ -61,21 +76,15 @@ export default function QuickActions({
     <section className="py-16">
       <Container className="space-y-10">
         <SectionHeader
-          eyebrow="At Your Table"
-          title="Everything you may need in one place"
-          subtitle="A simple, smooth way to move through the experience."
+          eyebrow="Quick Actions"
+          title="Everything guests may need in one place"
+          subtitle="Fast actions for people who want to decide, message, or call without hunting through the page."
         />
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {actions.map((action) => {
             const Icon = action.icon;
-            return (
-              <a
-                key={action.title}
-                href={action.href}
-                target={action.external ? "_blank" : undefined}
-                rel={action.external ? "noreferrer" : undefined}
-                className="tf-panel group p-5 transition hover:-translate-y-1 hover:border-gold-200/60 hover:bg-white/10"
-              >
+            const content = (
+              <>
                 <div className="flex items-center justify-between">
                   <div className="rounded-2xl border border-gold-200/30 bg-gold-200/10 p-3 text-gold-200">
                     <Icon size={22} />
@@ -92,6 +101,34 @@ export default function QuickActions({
                     {action.description}
                   </p>
                 </div>
+              </>
+            );
+
+            if (action.actionType) {
+              return (
+                <TrackedLink
+                  key={action.title}
+                  restaurantId={restaurantId}
+                  actionType={action.actionType}
+                  href={action.href}
+                  target={action.external ? "_blank" : undefined}
+                  rel={action.external ? "noreferrer" : undefined}
+                  className="tf-panel group p-5 transition hover:-translate-y-1 hover:border-gold-200/60 hover:bg-white/10"
+                >
+                  {content}
+                </TrackedLink>
+              );
+            }
+
+            return (
+              <a
+                key={action.title}
+                href={action.href}
+                target={action.external ? "_blank" : undefined}
+                rel={action.external ? "noreferrer" : undefined}
+                className="tf-panel group p-5 transition hover:-translate-y-1 hover:border-gold-200/60 hover:bg-white/10"
+              >
+                {content}
               </a>
             );
           })}

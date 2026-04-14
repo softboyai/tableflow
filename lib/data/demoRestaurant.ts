@@ -174,7 +174,12 @@ export const demoRestaurantData: RestaurantPageData = {
       "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3067.172677359789!2d30.05870547648075!3d-1.952530998422797!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19d5f39a5f5f8c9d%3A0x2e59f28d22b7f1d2!2sKigali!5e0!3m2!1sen!2srw!4v1718192026759!5m2!1sen!2srw",
     address: "Kigali, Rwanda",
     locationHint: "Find us in the heart of the city",
-    hoursLabel: "Open daily from 12:00 PM to 1:00 AM."
+    hoursLabel: "Open daily from 12:00 PM to 1:00 AM.",
+    leadCaptureTitle: "Get updates from Aurum Dining",
+    leadCaptureText:
+      "Leave your name and WhatsApp number to hear about special nights, chef events, and return offers.",
+    leadCaptureButtonText: "Get Updates",
+    leadCapturePlacement: "after_menu"
   },
   menuCategories: categories,
   signatureDishes: menuItems

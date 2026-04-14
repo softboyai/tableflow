@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import Container from "@/components/Container";
-import { getDemoRestaurantSlug } from "@/lib/restaurants";
+import { getDemoRestaurantSlug, listLiveRestaurants } from "@/lib/restaurants";
 
 function TableFlowMark({ className = "h-5 w-5" }: { className?: string }) {
   return (
@@ -137,6 +137,7 @@ const mockupPoints = [
 
 export default async function Home() {
   const demoSlug = getDemoRestaurantSlug();
+  const liveRestaurants = await listLiveRestaurants();
 
   return (
     <main className="overflow-hidden bg-ink text-ivory">
@@ -217,6 +218,19 @@ export default async function Home() {
                   <p className="text-center text-[13px] text-ivory/45 lg:text-left">
                     Free to try <span className="inline-block h-1 w-1 rounded-full bg-ivory/30 align-middle" /> No credit card needed <span className="inline-block h-1 w-1 rounded-full bg-ivory/30 align-middle" /> Set up in one afternoon
                   </p>
+                  {liveRestaurants.length > 0 ? (
+                    <div className="flex flex-wrap justify-center gap-2 pt-2 lg:justify-start">
+                      {liveRestaurants.map((restaurant) => (
+                        <Link
+                          key={restaurant.id}
+                          href={`/r/${restaurant.slug}`}
+                          className="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-ivory/75 transition hover:border-gold-200/40 hover:text-ivory"
+                        >
+                          Open {restaurant.name}
+                        </Link>
+                      ))}
+                    </div>
+                  ) : null}
                 </div>
               </div>
             </div>

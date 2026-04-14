@@ -20,11 +20,11 @@ export default function Promotion({
     claimCode: string;
     claimedAt: string;
   } | null>(null);
-  const [claimError, setClaimError] = useState("");
+  const [helperText, setHelperText] = useState("");
 
   const handleClaim = async () => {
     setButtonLabel("Opening...");
-    setClaimError("");
+    setHelperText("");
 
     const response = await fetch("/api/promo-claim", {
       method: "POST",
@@ -49,11 +49,12 @@ export default function Promotion({
         claimedAt: data.claimedAt
       });
       setButtonLabel("Saved For You");
+      setHelperText("Show this code when you order.");
       return;
     }
 
-    setButtonLabel("Try Again");
-    setClaimError("We couldn't save that offer just yet. Please try again.");
+    setButtonLabel("Ask Your Server");
+    setHelperText("Ask your server about this offer.");
   };
 
   return (
@@ -64,12 +65,15 @@ export default function Promotion({
           <div className="relative z-10 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div className="space-y-3">
               <span className="inline-flex items-center gap-2 rounded-full border border-gold-200/40 bg-black/50 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-gold-200">
-                <Sparkles size={14} /> Today&apos;s Special
+                <Sparkles size={14} /> Today&apos;s Offer
               </span>
               <h3 className="text-balance font-display text-4xl leading-[0.94] text-ivory">{title}</h3>
               <p className="max-w-lg text-sm text-ivory/70">
                 {description}
               </p>
+              {helperText ? (
+                <p className="text-sm text-gold-100/75">{helperText}</p>
+              ) : null}
             </div>
             <button
               type="button"
@@ -109,11 +113,6 @@ export default function Promotion({
                 Your server can use this code to confirm the offer at the table.
               </p>
             </div>
-          ) : null}
-          {claimError ? (
-            <p className="relative z-10 mt-4 text-sm text-red-200">
-              {claimError}
-            </p>
           ) : null}
         </div>
       </Container>

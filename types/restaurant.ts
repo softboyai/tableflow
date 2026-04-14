@@ -13,6 +13,10 @@ export type Restaurant = {
   address: string;
   locationHint: string;
   hoursLabel: string;
+  leadCaptureTitle: string;
+  leadCaptureText: string;
+  leadCaptureButtonText: string;
+  leadCapturePlacement: "after_promo" | "after_menu";
 };
 
 export type RestaurantGalleryItem = {

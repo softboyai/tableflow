@@ -1,14 +1,19 @@
 import { MessageCircle } from "lucide-react";
+import TrackedLink from "./TrackedLink";
 
 type FloatingWhatsAppProps = {
+  restaurantId: string;
   whatsappHref: string;
 };
 
 export default function FloatingWhatsApp({
+  restaurantId,
   whatsappHref
 }: FloatingWhatsAppProps) {
   return (
-    <a
+    <TrackedLink
+      restaurantId={restaurantId}
+      actionType="whatsapp_click"
       href={whatsappHref}
       target="_blank"
       rel="noreferrer"
@@ -17,6 +22,6 @@ export default function FloatingWhatsApp({
     >
       <MessageCircle size={18} />
       Chat Now
-    </a>
+    </TrackedLink>
   );
 }

@@ -1,8 +1,7 @@
 import type { ComponentType } from "react";
 import { cookies, headers } from "next/headers";
 import Link from "next/link";
-import { notFound } from "next/navigation";
-import { ArrowRight, BarChart3, Gift, ScanLine, Users } from "lucide-react";
+import { ArrowRight, MessageCircle, Megaphone, PhoneCall, ScanLine, Users } from "lucide-react";
 import Container from "@/components/Container";
 import DashboardPasswordGate from "@/components/DashboardPasswordGate";
 import RestaurantContentEditor from "@/components/RestaurantContentEditor";
@@ -25,6 +24,36 @@ export const revalidate = 0;
 
 function getCleanAppUrl() {
   return (process.env.NEXT_PUBLIC_APP_URL || "").trim().replace(/\/$/, "");
+}
+
+function buildImproveResultsTips(data: NonNullable<Awaited<ReturnType<typeof getRestaurantDashboardData>>>) {
+  const tips: string[] = [];
+
+  if (data.metrics.scans < 20) {
+    tips.push("Place the QR where guests naturally reach first so more people open the menu.");
+  }
+
+  if (data.metrics.promoClaims === 0) {
+    tips.push("Make your offer more specific so guests have a reason to tap it before ordering.");
+  }
+
+  if (data.metrics.whatsappClicks === 0) {
+    tips.push("Make it clear guests can message you directly on WhatsApp for quick questions or bookings.");
+  }
+
+  if (data.metrics.leads === 0) {
+    tips.push("Ask for guest contact details after they see the offer or menu, and tell them what they will get in return.");
+  }
+
+  if (data.topViewedItems.length > 0) {
+    tips.push(`Promote ${data.topViewedItems[0]} more strongly since guests already notice it.`);
+  }
+
+  if (tips.length === 0) {
+    tips.push("Your setup is working. Keep the menu fresh and rotate the offer so repeat guests have a reason to act.");
+  }
+
+  return tips.slice(0, 4);
 }
 
 export default async function DashboardPage({ params }: DashboardPageProps) {
@@ -126,6 +155,7 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
   const guestUrl = appUrl
     ? `${appUrl}/r/${restaurant.slug}`
     : `${protocol}://${host}/r/${restaurant.slug}`;
+  const improveResultsTips = buildImproveResultsTips(data);
 
   return (
     <main className="min-h-screen bg-ink text-ivory">
@@ -133,11 +163,12 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
         <Container className="py-8 sm:py-10">
           <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div className="space-y-3">
+              <p className="tf-eyebrow">Restaurant Dashboard</p>
               <h1 className="text-balance font-display text-5xl leading-[0.94] sm:text-6xl">
                 {restaurant.name}
               </h1>
               <p className="max-w-2xl text-sm text-ivory/65 sm:text-base">
-                {restaurant.tagline || "Track how guests interact with your experience."}
+                {restaurant.tagline || "Track what guests notice, what they click, and who is ready to hear from you."}
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
@@ -147,12 +178,9 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
               >
                 Open Guest View
               </Link>
-              <Link
-                href="/join"
-                className="tf-button-primary px-5 py-3"
-              >
-                Add Restaurant
-              </Link>
+              <a href="#guest-experience" className="tf-button-primary px-5 py-3">
+                Improve Guest Page
+              </a>
             </div>
           </div>
         </Container>
@@ -160,32 +188,51 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
 
       <section className="py-10 sm:py-12">
         <Container className="space-y-10">
-          <div className="grid gap-4 md:grid-cols-3">
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
             <MetricCard
               icon={ScanLine}
-              label="Scans"
+              label="Menu Views"
               value={metrics.scans}
-              helper="Guests who opened your menu"
+              helper="Guests who opened your page from the table"
+            />
+            <MetricCard
+              icon={MessageCircle}
+              label="WhatsApp Clicks"
+              value={metrics.whatsappClicks}
+              helper="Guests who wanted to message the team"
+            />
+            <MetricCard
+              icon={PhoneCall}
+              label="Waiter Calls"
+              value={metrics.waiterCalls}
+              helper="Guests who tried to reach staff quickly"
             />
             <MetricCard
               icon={Users}
-              label="Guest Details"
+              label="Leads Captured"
               value={metrics.leads}
-              helper="People who asked to stay in touch"
+              helper="Guests who chose to stay in touch"
             />
             <MetricCard
-              icon={Gift}
-              label="Offer Taps"
+              icon={Megaphone}
+              label="Promotion Clicks"
               value={metrics.promoClaims}
-              helper="Guests who responded to your offer"
+              helper="Guests who saved today's offer"
             />
           </div>
 
-          <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+          <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
             <div className="tf-panel p-6">
-              <div className="flex items-center gap-3">
-                <BarChart3 className="text-gold-200" size={18} />
-                <h2 className="text-xl font-semibold">Recent Guests</h2>
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <p className="tf-eyebrow">Recent Leads</p>
+                  <h2 className="mt-2 text-2xl font-semibold text-ivory">
+                    New guest contacts ready for follow-up
+                  </h2>
+                </div>
+                <Link href="#guest-experience" className="text-sm text-gold-200 transition hover:text-gold-100">
+                  Improve guest page
+                </Link>
               </div>
 
               <div className="mt-5 space-y-3">
@@ -208,8 +255,11 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
                   ))
                 ) : (
                   <div className="rounded-2xl border border-dashed border-white/15 bg-black/20 px-4 py-5">
-                      <p className="text-sm text-ivory/60">
-                      No guest details yet. Once someone leaves their details, they will appear here.
+                    <p className="text-sm text-ivory/75">
+                      No leads captured yet.
+                    </p>
+                    <p className="mt-2 text-sm text-ivory/55">
+                      No leads captured yet. Add a simple reason for guests to leave their WhatsApp number, like offers, event updates, or return specials.
                     </p>
                   </div>
                 )}
@@ -218,35 +268,39 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
 
             <div className="space-y-6">
               <div className="rounded-[32px] border border-gold-200/20 bg-gradient-to-br from-gold-200/10 via-white/5 to-transparent p-6">
-                <p className="tf-eyebrow">
-                  Keep It Looking Great
-                </p>
-                <div className="mt-4 space-y-3 text-sm text-ivory/70">
-                  <p>Open the guest view and make sure it feels right for your restaurant.</p>
-                  <p>Add dishes, images, and moments that make the experience feel complete.</p>
-                  <p>Print the QR and place it where guests naturally reach for it.</p>
+                <p className="tf-eyebrow">Improve Results</p>
+                <div className="mt-4 space-y-3 text-sm text-ivory/72">
+                  {improveResultsTips.map((tip) => (
+                    <p key={tip}>{tip}</p>
+                  ))}
                 </div>
               </div>
 
               <div className="tf-panel p-6">
-                <p className="tf-eyebrow">
-                  Dishes Guests Notice Most
-                </p>
+                <p className="tf-eyebrow">Most Viewed Dishes</p>
                 <div className="mt-4 space-y-3">
                   {topViewedItems.length > 0 ? (
-                    topViewedItems.map((item) => (
+                    topViewedItems.map((item, index) => (
                       <div
                         key={item}
                         className="flex items-center justify-between rounded-2xl border border-white/10 bg-black/25 px-4 py-3"
                       >
-                        <p className="text-sm text-ivory">{item}</p>
+                        <div>
+                          <p className="text-sm text-ivory">{item}</p>
+                          <p className="text-[11px] uppercase tracking-[0.18em] text-ivory/45">
+                            {index === 0 ? "Strongest attention" : "Guest interest"}
+                          </p>
+                        </div>
                         <ArrowRight size={15} className="text-gold-200" />
                       </div>
                     ))
                   ) : (
                     <div className="rounded-2xl border border-dashed border-white/15 bg-black/20 px-4 py-5">
-                      <p className="text-sm text-ivory/60">
-                        Nothing here yet. Once guests start exploring the menu, their favorite stops will appear here.
+                      <p className="text-sm text-ivory/75">
+                        No dish data yet.
+                      </p>
+                      <p className="mt-2 text-sm text-ivory/55">
+                        Once guests start browsing, your strongest menu items will appear here so you know what deserves more promotion.
                       </p>
                     </div>
                   )}
@@ -255,11 +309,14 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
             </div>
           </div>
 
-          <RestaurantContentEditor restaurant={restaurant} />
-          <RestaurantQrCard
-            restaurantName={restaurant.name}
-            guestUrl={guestUrl}
-          />
+          <div id="guest-experience" className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+            <RestaurantContentEditor restaurant={restaurant} />
+            <RestaurantQrCard
+              restaurantName={restaurant.name}
+              guestUrl={guestUrl}
+            />
+          </div>
+
           <RestaurantEventsManager
             restaurantId={restaurant.id}
             slug={restaurant.slug}

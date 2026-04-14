@@ -16,6 +16,10 @@ type DashboardRestaurant = {
   address: string | null;
   location_hint: string | null;
   hours_label: string | null;
+  lead_capture_title: string | null;
+  lead_capture_text: string | null;
+  lead_capture_button_text: string | null;
+  lead_capture_placement: string | null;
 };
 
 type MetricsRow = {
@@ -71,10 +75,17 @@ type EventRow = {
   start_at: string | null;
 };
 
+type ActionClickRow = {
+  restaurant_id: string;
+  action_type: string;
+};
+
 export type RestaurantDashboardData = {
   restaurant: DashboardRestaurant;
   metrics: {
     scans: number;
+    whatsappClicks: number;
+    waiterCalls: number;
     leads: number;
     promoClaims: number;
   };
@@ -168,9 +179,23 @@ export async function getRestaurantDashboardData(
     return null;
   }
 
+  const leadCaptureResponse = await supabase
+    .from("restaurants")
+    .select(
+      "lead_capture_title, lead_capture_text, lead_capture_button_text, lead_capture_placement"
+    )
+    .eq("id", restaurant.id)
+    .maybeSingle<Partial<DashboardRestaurant>>();
+
+  const restaurantWithLeadCapture = {
+    ...restaurant,
+    ...(leadCaptureResponse.error ? {} : leadCaptureResponse.data || {})
+  };
+
   const [
     metricsResponse,
     leadsResponse,
+    actionClicksResponse,
     topViewedResponse,
     categoriesResponse,
     menuItemsResponse,
@@ -189,6 +214,10 @@ export async function getRestaurantDashboardData(
       .eq("restaurant_id", restaurant.id)
       .order("created_at", { ascending: false })
       .limit(10),
+    supabase
+      .from("restaurant_action_clicks")
+      .select("restaurant_id, action_type")
+      .eq("restaurant_id", restaurant.id),
     supabase
       .from("menu_item_views")
       .select("menu_items(name)")
@@ -215,6 +244,9 @@ export async function getRestaurantDashboardData(
 
   const metrics = metricsResponse.data;
   const recentLeads = (leadsResponse.data || []) as LeadRow[];
+  const actionClicks = actionClicksResponse.error
+    ? []
+    : ((actionClicksResponse.data || []) as ActionClickRow[]);
   const topViewedItems = Array.from(
     new Set(
       ((topViewedResponse.data || []) as TopDishRow[])
@@ -253,9 +285,15 @@ export async function getRestaurantDashboardData(
   }));
 
   return {
-    restaurant,
+    restaurant: restaurantWithLeadCapture,
     metrics: {
       scans: metrics?.total_qr_scans || 0,
+      whatsappClicks: actionClicks.filter(
+        (item) => item.action_type === "whatsapp_click"
+      ).length,
+      waiterCalls: actionClicks.filter(
+        (item) => item.action_type === "waiter_call"
+      ).length,
       leads: metrics?.total_leads || 0,
       promoClaims: metrics?.total_promo_claims || 0
     },

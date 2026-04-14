@@ -6,7 +6,6 @@ import JoinClubForm from "@/components/JoinClubForm";
 import Location from "@/components/Location";
 import MenuExperience from "@/components/MenuExperience";
 import Promotion from "@/components/Promotion";
-import QuickActions from "@/components/QuickActions";
 import RestaurantScanTracker from "@/components/RestaurantScanTracker";
 import SignatureDishes from "@/components/SignatureDishes";
 import { toPhoneHref, toWhatsAppHref } from "@/lib/contact";
@@ -42,18 +41,28 @@ export default async function RestaurantPage({
         slug={restaurant.slug}
       />
       <Hero
+        restaurantId={restaurant.id}
         restaurantName={restaurant.name}
         tagline={restaurant.tagline}
         heroImageUrl={restaurant.heroImageUrl}
         whatsappHref={whatsappHref}
+        callHref={callHref}
       />
-      <QuickActions whatsappHref={whatsappHref} callHref={callHref} />
-      <SignatureDishes dishes={signatureDishes} />
       <Promotion
         restaurantId={restaurant.id}
         title={restaurant.promoTitle}
         description={restaurant.promoText}
       />
+      {restaurant.leadCapturePlacement === "after_promo" ? (
+        <JoinClubForm
+          restaurantId={restaurant.id}
+          restaurantName={restaurant.name}
+          title={restaurant.leadCaptureTitle}
+          description={restaurant.leadCaptureText}
+          buttonLabel={restaurant.leadCaptureButtonText}
+        />
+      ) : null}
+      <SignatureDishes dishes={signatureDishes} />
       <MenuExperience
         restaurantId={restaurant.id}
         restaurantName={restaurant.name}
@@ -63,17 +72,25 @@ export default async function RestaurantPage({
         menuItems={menuItems}
       />
       <Events events={events} />
-      <JoinClubForm
-        restaurantId={restaurant.id}
-        restaurantName={restaurant.name}
-      />
+      {restaurant.leadCapturePlacement !== "after_promo" ? (
+        <JoinClubForm
+          restaurantId={restaurant.id}
+          restaurantName={restaurant.name}
+          title={restaurant.leadCaptureTitle}
+          description={restaurant.leadCaptureText}
+          buttonLabel={restaurant.leadCaptureButtonText}
+        />
+      ) : null}
       <Location
         mapsEmbedUrl={restaurant.mapsEmbedUrl}
         locationHint={restaurant.locationHint}
         hoursLabel={restaurant.hoursLabel}
         address={restaurant.address}
       />
-      <FloatingWhatsApp whatsappHref={whatsappHref} />
+      <FloatingWhatsApp
+        restaurantId={restaurant.id}
+        whatsappHref={whatsappHref}
+      />
     </main>
   );
 }
